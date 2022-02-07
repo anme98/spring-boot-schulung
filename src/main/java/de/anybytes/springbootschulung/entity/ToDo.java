@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+// JPA Entity Doku: https://spring.io/guides/gs/accessing-data-jpa/
+
 @Entity
 public class ToDo {
 
@@ -16,7 +18,11 @@ public class ToDo {
     private String name;
     private String dueDate;
 
-    public ToDo() {
+    protected ToDo() {
+    }
+
+    public ToDo(String name) {
+        this.name = name;
     }
 
     public void setId(Long id) {
@@ -49,5 +55,15 @@ public class ToDo {
 
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
+    }
+
+    @Override
+    public String toString() {
+        return "ToDo{" +
+                "id=" + id +
+                ", isDone=" + isDone +
+                ", name='" + name + '\'' +
+                ", dueDate='" + dueDate + '\'' +
+                '}';
     }
 }
