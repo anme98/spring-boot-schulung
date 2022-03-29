@@ -1,6 +1,7 @@
 package de.anybytes.springbootschulung.entity;
 
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Data
+@AllArgsConstructor
 public class ToDo {
 
     @Id

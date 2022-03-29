@@ -7,14 +7,13 @@ import de.anybytes.springbootschulung.exception.ResourceNotFoundException;
 import de.anybytes.springbootschulung.repository.ToDoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
-public class ToDoServiceImpl implements ToDoService{
+public class ToDoServiceImpl implements ToDoService {
 
     private final ToDoRepository toDoRepository;
     private final ModelMapper modelMapper;
@@ -26,51 +25,49 @@ public class ToDoServiceImpl implements ToDoService{
     }
 
     @Override
-    public ResponseEntity<Void> createToDo(CreateToDoDTO toDoDTO) {
-        ToDo todo = toDoRepository.save(modelMapper.map(toDoDTO, ToDo.class));
-        return new ResponseEntity<>(HttpStatus.OK);
+    public void createToDo(CreateToDoDTO toDoDTO) {
+        toDoRepository.save(modelMapper.map(toDoDTO, ToDo.class));
     }
 
     @Override
-    public ResponseEntity<ToDo> updateTodo(UpdateToDoDTO toDoDTO) {
+    public ToDo updateTodo(UpdateToDoDTO toDoDTO) {
         Long id = toDoDTO.getId();
         ToDo todo = toDoRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("Not found Todo with id = " + id)
+                () -> new ResourceNotFoundException("Not found Todo with id = " + id)
         );
         modelMapper.map(toDoDTO, todo);
-        return new ResponseEntity<>(toDoRepository.save(todo), HttpStatus.ACCEPTED);
+        return toDoRepository.save(todo);
     }
 
     @Override
-    public ResponseEntity<Void> deleteTodo(Long id) {
+    public void deleteTodo(Long id) {
+        toDoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not found Todo with id = " + id));
         toDoRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @Override
-    public ResponseEntity<ToDo> getTodo(Long id) {
-        ToDo todo = toDoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not found Todo with id = " + id));
-        return new ResponseEntity<>(todo, HttpStatus.OK);
+    public ToDo getTodo(Long id) {
+        return toDoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
     }
 
     @Override
-    public ResponseEntity<List<ToDo>> getTodos() {
-        return new ResponseEntity<>((List<ToDo>) toDoRepository.findAll(), HttpStatus.OK);
+    public List<ToDo> getTodos() {
+        return (List<ToDo>) toDoRepository.findAll();
     }
 
     @Override
-    public ResponseEntity<List<ToDo>> getDoneTodos() {
-        return new ResponseEntity<>(toDoRepository.findAllByIsDone(true), HttpStatus.OK);
+    public List<ToDo> getDoneTodos() {
+        return toDoRepository.findAllByIsDone(true);
     }
 
     @Override
-    public ResponseEntity<List<ToDo>> getUndoneTodos() {
-        return new ResponseEntity<>(toDoRepository.findAllByIsDone(false), HttpStatus.OK);
+    public List<ToDo> getUndoneTodos() {
+        return toDoRepository.findAllByIsDone(false);
     }
 
     @Override
-    public ResponseEntity<Long> countTodos(Boolean isDone) {
-        return new ResponseEntity<>(toDoRepository.countByIsDone(isDone), HttpStatus.OK);
+    public Long countTodos(Boolean isDone) {
+        return toDoRepository.countByIsDone(isDone);
     }
 
 }

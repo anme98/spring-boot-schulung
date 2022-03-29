@@ -1,12 +1,12 @@
 package de.anybytes.springbootschulung.controller;
 
+import de.anybytes.springbootschulung.aspect.TestAnnotation;
+import de.anybytes.springbootschulung.aspect.TrackExecutionTime;
 import de.anybytes.springbootschulung.dto.CreateToDoDTO;
 import de.anybytes.springbootschulung.dto.UpdateToDoDTO;
 import de.anybytes.springbootschulung.entity.ToDo;
 import de.anybytes.springbootschulung.service.ToDoService;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,49 +29,50 @@ public class ToDoController {
     @PostMapping("/save")
     public ResponseEntity<Void> createTodo(@Valid @RequestBody CreateToDoDTO todo) {
         toDoService.createToDo(todo);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/update")
     public ResponseEntity<ToDo> updateTodo(@RequestBody UpdateToDoDTO todo) {
-        toDoService.updateTodo(todo);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(toDoService.updateTodo(todo));
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
         toDoService.deleteTodo(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok().build();
     }
 
+    @TrackExecutionTime
     @GetMapping("/get/{id}")
     public ResponseEntity<ToDo> getTodo(@PathVariable Long id) {
-        return toDoService.getTodo(id);
+        return ResponseEntity.ok(toDoService.getTodo(id));
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<ToDo>> getAllTodos() {
-        return toDoService.getTodos();
+        return ResponseEntity.ok(toDoService.getTodos());
     }
 
+    @TestAnnotation
     @GetMapping("/getDone")
     public ResponseEntity<List<ToDo>> getDoneTodos() {
-        return toDoService.getDoneTodos();
+        return ResponseEntity.ok(toDoService.getDoneTodos());
     }
 
     @GetMapping("/getUndone")
     public ResponseEntity<List<ToDo>> getUndoneTodos() {
-        return toDoService.getUndoneTodos();
+        return ResponseEntity.ok(toDoService.getUndoneTodos());
     }
 
     @GetMapping("/countUndoneTodos")
     public ResponseEntity<Long> countUndoneTodos() {
-        return toDoService.countTodos(false);
+        return ResponseEntity.ok(toDoService.countTodos(false));
     }
 
     @GetMapping("/countDoneTodos")
     public ResponseEntity<Long> countDoneTodos() {
-        return toDoService.countTodos(true);
+        return ResponseEntity.ok(toDoService.countTodos(true));
     }
 
 }
