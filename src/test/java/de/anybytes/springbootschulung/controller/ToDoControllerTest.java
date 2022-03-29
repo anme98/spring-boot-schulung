@@ -35,8 +35,6 @@ public class ToDoControllerTest {
     private ToDoServiceImpl toDoService;
 
     private ToDo toDo1;
-    private ToDo toDo2;
-    private ToDo toDo3;
     private List<ToDo> toDoList;
     private CreateToDoDTO createToDoDTO;
     private UpdateToDoDTO updateToDoDTO;
@@ -45,8 +43,8 @@ public class ToDoControllerTest {
     public void setup() {
         toDoList = new ArrayList<>(Arrays.asList(
                 toDo1 = new ToDo(1L, false, "task1", null),
-                toDo2 = new ToDo(1L, true, "task2", null),
-                toDo3 = new ToDo(1L, false, "task3", null)
+                new ToDo(1L, true, "task2", null),
+                new ToDo(1L, false, "task3", null)
         ));
         createToDoDTO = new CreateToDoDTO(true, "update", "01.01.2022");
         updateToDoDTO = new UpdateToDoDTO(1L, true, "update", "01.01.2020");
