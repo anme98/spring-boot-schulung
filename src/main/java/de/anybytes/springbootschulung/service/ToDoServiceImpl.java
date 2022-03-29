@@ -32,16 +32,14 @@ public class ToDoServiceImpl implements ToDoService {
     @Override
     public ToDo updateTodo(UpdateToDoDTO toDoDTO) {
         Long id = toDoDTO.getId();
-        ToDo todo = toDoRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Not found Todo with id = " + id)
-        );
+        ToDo todo = toDoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
         modelMapper.map(toDoDTO, todo);
         return toDoRepository.save(todo);
     }
 
     @Override
     public void deleteTodo(Long id) {
-        toDoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not found Todo with id = " + id));
+        toDoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id.toString()));
         toDoRepository.deleteById(id);
     }
 
