@@ -25,7 +25,7 @@ public class ImageController {
     }
 
     @GetMapping("/{id}/picture")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<byte[]> getPicture(@PathVariable Long id) {
         Image image = imageService.getImage(id);
         return ResponseEntity.ok().contentType(MediaType.valueOf(image.getType())).body(image.getImage());

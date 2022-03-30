@@ -1,7 +1,6 @@
 package de.anybytes.springbootschulung.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +10,10 @@ import javax.persistence.Id;
 // JPA Entity Doku: https://spring.io/guides/gs/accessing-data-jpa/
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ToDo {
 
     @Id
@@ -21,9 +22,6 @@ public class ToDo {
     private Boolean isDone = false;
     private String name;
     private String dueDate;
-
-    protected ToDo() {
-    }
 
     public ToDo(String name, Boolean isDone) {
         this.name = name;
