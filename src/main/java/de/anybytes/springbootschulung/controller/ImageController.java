@@ -6,6 +6,7 @@ import de.anybytes.springbootschulung.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,7 @@ public class ImageController {
     }
 
     @GetMapping("/{id}/picture")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<byte[]> getPicture(@PathVariable Long id) {
         Image image = imageService.getImage(id);
         return ResponseEntity.ok().contentType(MediaType.valueOf(image.getType())).body(image.getImage());
